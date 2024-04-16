@@ -1,0 +1,58 @@
+app-id: com.gitlab.corectrl
+runtime: org.kde.Platform
+runtime-version: '5.15-23.08'
+sdk: org.kde.Sdk
+command: corectrl
+# rename-desktop-file: m-overlay.desktop
+# rename-icon: m-overlay
+finish-args:
+  - --device=all
+  # the file picker uses portals but the set
+  # game directory feature still needs this
+  - --filesystem=host:ro
+  - --socket=pulseaudio
+  - --env=QT_QPA_PLATFORM=xcb
+  - --socket=x11
+  - --share=network
+  - --share=ipc
+modules:
+
+  - name: quazip
+    buildsystem: cmake
+    sources:
+      - type: git
+        url: https://github.com/stachenov/quazip
+        commit: 606383254fa0a08cd15833e944fe530a57d3c08a
+  
+  - name: spdlog
+    buildsystem: cmake
+    sources:
+      - type: git
+        url: https://github.com/gabime/spdlog
+        commit: a2b4262090fd3f005c2315dcb5be2f0f1774a005
+
+  - name: pugixml
+    buildsystem: cmake
+    sources:
+      - type: git
+        url: https://github.com/zeux/pugixml
+        commit: f1d8c51ec8e05b571d7f420ce5cb1a6708c5e0ed
+  
+  - name: botan
+    buildsystem: simple
+    sources:
+      - type: git
+        url: https://github.com/randombit/botan
+        commit: 3801b0af5d4414cc4bded25b8d7a09b3d4a0854e
+    build-commands:
+    - python 3./configure.py --prefix=${FLATPAK_DEST}
+    - make
+    - make install
+
+  - name: corectrl
+    buildsystem: cmake
+    sources:
+      - type: git
+        url: https://gitlab.com/corectrl/corectrl
+        commit: 5c77ecb28587202d6bc59bfe522e0299207dd492
+    
