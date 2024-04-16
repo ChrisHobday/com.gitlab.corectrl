@@ -45,9 +45,16 @@ modules:
         url: https://github.com/randombit/botan
         commit: 3801b0af5d4414cc4bded25b8d7a09b3d4a0854e
     build-commands:
-    - python 3./configure.py --prefix=${FLATPAK_DEST}
+    - python ./configure.py --prefix=${FLATPAK_DEST}
     - make
     - make install
+
+  - name: polkit
+    buildsystem: meson
+    sources:
+      - type: git
+        url: https://github.com/polkit-org/polkit
+        commit: 05c60e4561655b2e15cf807cc7e84f9b80e0486f
 
   - name: corectrl
     buildsystem: cmake
