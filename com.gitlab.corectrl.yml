@@ -56,7 +56,7 @@ modules:
         url: https://github.com/yaml/pyyaml
         commit: 48838a3c768e3d1bcab44197d800145cfd0719d6
     build-commands:
-    - python setup.py --prefix=${FLATPAK_DEST} install
+    - python ./setup.py install --prefix=${FLATPAK_DEST}
 
   - name: duktape
     buildsystem: simple
