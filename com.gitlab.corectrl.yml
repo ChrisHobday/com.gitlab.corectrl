@@ -37,6 +37,9 @@ modules:
       - type: git
         url: https://github.com/zeux/pugixml
         commit: f1d8c51ec8e05b571d7f420ce5cb1a6708c5e0ed
+
+  - shared-modules/python2.7/python-2.7.json
+  - name: python2.7
   
   - name: botan
     buildsystem: simple
@@ -45,19 +48,7 @@ modules:
         url: https://github.com/randombit/botan
         commit: 3801b0af5d4414cc4bded25b8d7a09b3d4a0854e
     build-commands:
-    - python ./configure.py --prefix=${FLATPAK_DEST}
-    - make
-    - make install
-
-  - name: libyaml
-    buildsystem: simple
-    sources:
-      - type: git
-        url: https://github.com/yaml/libyaml
-        commit: f8f760f7387d2cc56a2fc7b1be313a3bf3f7f58c
-    build-commands:
-    - ./bootstrap
-    - ./configure --prefix=${FLATPAK_DEST}
+    - python3 ./configure.py --prefix=${FLATPAK_DEST}
     - make
     - make install
 
@@ -68,7 +59,8 @@ modules:
         url: https://github.com/yaml/pyyaml
         commit: 48838a3c768e3d1bcab44197d800145cfd0719d6
     build-commands:
-    - python3 ./setup.py install --prefix=${FLATPAK_DEST}
+    - python3 ./setup.py --without-libyaml install --prefix=${FLATPAK_DEST}
+    - mv /app/lib/python3.11/site-packages/PyYAML-6.0.1-py3.11-linux-x86_64.egg/* /app/lib/python3.11/site-packages/
 
   - name: duktape
     buildsystem: simple
@@ -77,8 +69,8 @@ modules:
         url: https://duktape.org/duktape-2.7.0.tar.xz
         sha256: 90f8d2fa8b5567c6899830ddef2c03f3c27960b11aca222fa17aa7ac613c2890
     build-commands:
-    - python ./tools/configure.py --prefix=${FLATPAK_DEST}
-    - make
+    - python ./tools/configure.py --output-directory=${FLATPAK_DEST}
+    - make -f Makefile.sharedlibrary --INSTALL_PREFIX=${FLATPAK_DEST}
     - make install
 
   - name: polkit
