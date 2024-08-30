@@ -16,7 +16,6 @@ finish-args:
   - --share=network
   - --share=ipc
 modules:
-
   - name: quazip
     buildsystem: cmake
     sources:
@@ -48,19 +47,9 @@ modules:
         url: https://github.com/randombit/botan
         commit: 3801b0af5d4414cc4bded25b8d7a09b3d4a0854e
     build-commands:
-    - python3 ./configure.py --prefix=${FLATPAK_DEST}
-    - make
-    - make install
-
-  - name: pyyaml
-    buildsystem: simple
-    sources:
-      - type: git
-        url: https://github.com/yaml/pyyaml
-        commit: 48838a3c768e3d1bcab44197d800145cfd0719d6
-    build-commands:
-    - python3 ./setup.py --without-libyaml install --prefix=${FLATPAK_DEST}
-    - mv /app/lib/python3.11/site-packages/PyYAML-6.0.1-py3.11-linux-x86_64.egg/* /app/lib/python3.11/site-packages/
+      - python3 ./configure.py --prefix=${FLATPAK_DEST}
+      - make
+      - make install
 
   - name: duktape
     buildsystem: simple
@@ -68,10 +57,10 @@ modules:
       - type: archive
         url: https://duktape.org/duktape-2.7.0.tar.xz
         sha256: 90f8d2fa8b5567c6899830ddef2c03f3c27960b11aca222fa17aa7ac613c2890
+      - type: patch
+        path: Makefile.sharedlibrary.patch
     build-commands:
-    - python ./tools/configure.py --output-directory=${FLATPAK_DEST}
-    - make -f Makefile.sharedlibrary --INSTALL_PREFIX=${FLATPAK_DEST}
-    - make install
+      - make -f Makefile.sharedlibrary install
 
   - name: polkit
     buildsystem: meson

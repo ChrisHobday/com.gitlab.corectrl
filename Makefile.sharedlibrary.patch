@@ -1,0 +1,13 @@
+diff --git a/Makefile.sharedlibrary b/Makefile.sharedlibrary
+index bf5c0cb..3edf8e1 100644
+--- a/Makefile.sharedlibrary
++++ b/Makefile.sharedlibrary
+@@ -47,7 +47,7 @@ else
+ endif
+ 
+ # Change to actual path for actual distribution packaging.
+-INSTALL_PREFIX ?= /usr/local
++INSTALL_PREFIX ?= /app
+ INSTALL_PREFIX := $(INSTALL_PREFIX)
+ DESTDIR ?=
+ DESTDIR := $(DESTDIR)
